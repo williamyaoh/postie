@@ -1,0 +1,29 @@
+# Include NOOPs in the sending flow.
+< 220
+> NOOP
+< 250
+> EHLO localhost
+< 250
+> NOOP
+< 250
+> MAIL FROM:<me@test.com>
+< 250
+> NOOP
+< 250
+> RCPT TO:<you@test.com>
+< 250
+> NOOP
+< 250
+> DATA
+< 354
+> From: me@test.com
+> To: you@test.com
+> Subject: A Test Email
+>
+> Hello!
+> .
+< 250
+> NOOP
+< 250
+> QUIT
+< 221

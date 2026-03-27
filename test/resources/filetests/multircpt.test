@@ -1,0 +1,22 @@
+# Send to multiple recipients.
+< 220
+> EHLO localhost
+< 250
+> MAIL FROM:<me@test.com>
+< 250
+> RCPT TO:<you@test.com>
+< 250
+> RCPT TO:<you2@test.com>
+< 250
+> DATA
+< 354
+> From: me@test.com
+> To: you@test.com
+> Bcc: you2@test.com
+> Subject: A Test Email
+> 
+> Hello!
+> .
+< 250
+> QUIT
+< 221

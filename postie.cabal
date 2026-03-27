@@ -41,9 +41,14 @@ source-repository head
   location: https://github.com/alexbiehl/postie.git
 
 flag examples
-  Description:  Build examples
+  description:  Build examples
   Default: False
   Manual: True
+
+flag e2e-tests
+  description: Build end-to-end tests
+  default: False
+  manual: True
 
 library
   build-depends:
@@ -81,6 +86,26 @@ library
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+
+test-suite postie-e2e
+  type: exitcode-stdio-1.0
+  build-depends:
+    base                 >= 4.13.0 && < 5,
+    bytestring           >= 0.10.10 && < 0.13,
+    directory            < 1.4,
+    network              < 3.3,
+    pipes                >= 4.3.14 && < 4.4,
+    postie,
+    process              < 1.7,
+    tasty                < 1.6,
+    tasty-hunit          < 0.11
+  if flag(e2e-tests)
+    buildable: True
+  else
+    buildable: False
+  main-is: e2e.hs
+  default-language: Haskell2010
+  hs-source-dirs: test
 
 executable postie-example-simple
   build-depends:
