@@ -153,7 +153,7 @@ mkServerParams tlsSettings = do
 defaultExceptionHandler :: Maybe SessionID -> SomeException -> IO ()
 defaultExceptionHandler _ e = throwIO e `catches` handlers
   where
-    handlers = [Handler ah, Handler oh, Handler tlsh, Handler th, Handler sh]
+    handlers = [Handler ah, Handler oh, Handler tlsh, Handler sh]
     ah :: AsyncException -> IO ()
     ah ThreadKilled = return ()
     ah x = hPrint stderr x
@@ -164,14 +164,6 @@ defaultExceptionHandler _ e = throwIO e `catches` handlers
       where
         et = ioeGetErrorType x
     tlsh :: TLS.TLSException -> IO ()
-    tlsh TLS.Terminated {} = return ()
-    tlsh TLS.HandshakeFailed {} = return ()
-    tlsh x = hPrint stderr x
-    th :: TLS.TLSException -> IO ()
-    th (TLS.Uncontextualized (TLS.Error_EOF)) = return ()
-    th (TLS.Uncontextualized (TLS.Error_Packet_Parsing _)) = return ()
-    th (TLS.Uncontextualized (TLS.Error_Packet _)) = return ()
-    th (TLS.Uncontextualized (TLS.Error_Protocol _ _)) = return ()
-    th x = hPrint stderr x
+    tlsh _ = pure ()
     sh :: SomeException -> IO ()
     sh = hPrint stderr
